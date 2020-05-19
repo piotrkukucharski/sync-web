@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import {BrowserRouter, Redirect, Route, Switch, useHistory} from "react-router-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import './styles/App.scss';
+import TokenForm from './tokenForm';
+import ListUrl from "./list-url";
+
+
+const App = () => {
+    const history = useHistory();
+
+    const [token, setToken] = useState(localStorage.getItem('token') || '');
+    const setTokenHandler = (tokenToSave) => {
+        setToken(tokenToSave);
+        localStorage.setItem('token', token);
+        window.location.pathname='/';
+    };
+
+    return (
+        <BrowserRouter>
+            <Switch>
+                <Route path="/token">
+                    <TokenForm changeTokenHandler={setTokenHandler} token={token}/>
+                </Route>
+                <Route exact path="/">
+                    {token === '' ? <Redirect to="/token"/> : <ListUrl/>}
+                </Route>
+            </Switch>
+        </BrowserRouter>
+    );
 }
 
 export default App;
