@@ -23,7 +23,7 @@ const App = () => {
                     <TokenForm changeTokenHandler={setTokenHandler} token={token}/>
                 </Route>
                 <Route exact path="/">
-                    {token === '' ? <Redirect to="/token"/> : <ListUrl/>}
+                    {token === '' ? <Redirect to="/token"/> : <ListUrl token={token}/>}
                 </Route>
             </Switch>
         </BrowserRouter>

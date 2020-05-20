@@ -1,21 +1,29 @@
 import React, {useEffect, useState} from 'react';
 
 const ListUrl = (props) => {
-    const [token,setToken]=useState(props.token);
 
-    const [urls,setUrls]=useState([]);
+    const [urls, setUrls] = useState([]);
+    const [listUrls, setListUrls] = useState('');
 
-    const listItem = (props) =>{
-        return <li>{props.value}</li>;
+
+    useEffect(() => {
+        setListUrls(urls.map((item, i) => {
+            return (<li key={i}><a href="{item.url}">{item.url}</a></li>);
+        }));
+    }, [urls]);
+
+    const sync = () => {
+        return fetch(`https://sync-url.ey.r.appspot.com/url?token=${props.token}&offset=0&limit=100`)
+            .then(res => res.json())
+            .then(data => {
+                setUrls(data);
+            })
+        ;
     };
-
-    const listUrls = urls.map((item)=>{
-        return (<listItem value={item.url}/>);
-    });
 
     return (
         <div>
-            <button>Sync</button>
+            <button onClick={sync}>Sync</button>
             <ul>
                 {listUrls}
             </ul>
