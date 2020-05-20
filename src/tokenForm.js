@@ -12,14 +12,26 @@ const TokenForm = (props) => {
         props.changeTokenHandler(token);
     };
 
+    const generateToken = () => {
+        return fetch('https://sync-url.ey.r.appspot.com/token')
+            .then(res => res.json())
+            .then(data => {
+                setToken(data.token);
+            })
+        ;
+    };
+
     return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Token:
-                <input type="text" value={token} onChange={handleChange}/>
-            </label>
-            <input type="submit" value="Submit"/>
-        </form>
+        <div>
+            <form onSubmit={handleSubmit}>
+                <label>
+                    Token:
+                    <input type="text" value={token} onChange={handleChange}/>
+                </label>
+                <button type="submit">Save</button>
+            </form>
+            <button onClick={generateToken}>Get Token</button>
+        </div>
     );
 };
 export default TokenForm;
